@@ -1,0 +1,26 @@
+{
+  "name": "monstars",
+  "version": "1.0.0",
+  "description": "A Node.js app that stores nba statistics in a local mongo db",
+  "main": "/db/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sealneaward/monstars.git"
+  },
+  "author": "Neil Seward",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sealneaward/monstars/issues"
+  },
+  "homepage": "https://github.com/sealneaward/monstars#readme",
+  "dependencies": {
+    "bluebird": "^3.4.3",
+    "bunyan": "^1.8.1",
+    "mongoose": "^4.5.10",
+    "rc": "^1.1.6",
+    "request": "^2.74.0"
+  }
+}
