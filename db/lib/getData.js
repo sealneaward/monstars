@@ -8,7 +8,7 @@ const Player = require('../models/player');
 /*
 * Get data from stats.nba.com
 * */
-const getData = (url,log) => {
+const getData = (url,log, config) => {
     return new Promise ((resolve,reject) => {
         request(url,(err,response) => {
             if (err) {
@@ -17,7 +17,7 @@ const getData = (url,log) => {
             } else {
                 log.info('Got data');
 
-                connection.connect().then((mongoose) =>{
+                connection.connect(config).then((mongoose) =>{
                     response = JSON.parse(response.body).resultSets[0];
                     const headers = response.headers;
                     const data = response.rowSet;
@@ -29,19 +29,26 @@ const getData = (url,log) => {
                             playerObj[header] = playerData[index];
                         });
                         insert(mongoose,playerObj).then(() => {
-                            log.info('Inserted player successfully');
+                            log.info('Inserted player '+playerObj.PLAYER_NAME+' successfully');
                         });
                     });
+                }).then(() => {
+                    mongoose.connection.close();
+                    resolve();
                 });
             }
         });
     });
 };
 
+/*
+* Create model from player object and insert/update into db
+* */
 const insert = (mongoose, data) => {
     return new Promise ((resolve,reject) => {
-        const player = new Player(data);
-        mongoose.Players.findOneAndUpdate({PLAYER_ID:player.PLAYER_ID},player,{upsert:true}, (err) => {
+        const player = new Player(mongoose);
+        player.findOneAndUpdate({PLAYER_ID:data.PLAYER_ID},data,{upsert:true}, (err) => {
+            /* istanbul ignore if */
             if(err){
                 reject(err);
             }
@@ -54,4 +61,4 @@ const insert = (mongoose, data) => {
 
 module.exports = {
     getData
-}
+};
