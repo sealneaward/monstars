@@ -20,4 +20,4 @@ const connect  = (config) => {
 };
 module.exports = {
     connect
-}
+};

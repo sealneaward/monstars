@@ -2,6 +2,7 @@
 
 const chaiAsPromised = require('chai-as-promised');
 const chai  = require('chai');
+const mongoose = require('mongoose');
 const _ = require('lodash');
 const assert = chai.assert;
 chai.use(chaiAsPromised);
@@ -20,5 +21,9 @@ describe('Local mongodb connection test', () => {
         assert.isRejected(connection.connect(config)).then(() => {
             done();
         });
+    });
+
+    after('close connection', () => {
+       mongoose.connection.close();
     });
 });
