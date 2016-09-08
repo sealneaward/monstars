@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 * */
 const getData = (url,log) => {
     return new Promise ((resolve,reject) => {
+        let data;
+
         request(url,(err,response) => {
             if (err) {
                 log.error('Could not get data', err);
@@ -21,20 +23,26 @@ const getData = (url,log) => {
                 log.info('Got data');
                 response = JSON.parse(response.body).resultSets[0];
                 const headers = response.headers;
-                const data = response.rowSet;
+                data = response.rowSet;
 
                 //set headers as keys
-                data.forEach((playerData) => {
+                data = data.map((playerData) => {
                     const playerObj = {};
                     headers.forEach((header, index) => {
                         playerObj[header] = playerData[index];
                     });
-                    insert(playerObj).then(() => {
-                        log.info('Inserted player '+playerObj.PLAYER_NAME+' successfully');
-                    });
+                    return playerObj;
                 });
-                resolve();
-                return;
+                insert(data).then((err) => {
+                    /* istanbul ignore if */
+                    if(err){
+                        log.info('Could not save players: ', err);
+                        reject(err);
+                    } else {
+                        log.info('Successfully saved players');
+                        resolve();
+                    }
+                });
             }
         });
     });
@@ -46,7 +54,7 @@ const getData = (url,log) => {
 const insert = (data) => {
     return new Promise ((resolve,reject) => {
         const player = new Player(mongoose);
-        player.findOneAndUpdate({PLAYER_ID:data.PLAYER_ID},data,{upsert:true}, (err) => {
+        player.create(data,(err) => {
             /* istanbul ignore if */
             if(err){
                 reject(err);

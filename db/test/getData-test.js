@@ -12,11 +12,8 @@ const log = require('bunyan').createLogger(config.log);
 
 chai.use(chaiAsPromised);
 
-/*
-* TODO : complete API tests
-* */
 describe('NBA Statistics API tests', () => {
-    before('establishes mongo connection', (done) => {
+    before('Establishes mongo connection', (done) => {
         connection.connect(config).then(() => {
             done();
         });
@@ -27,12 +24,12 @@ describe('NBA Statistics API tests', () => {
     });
 
     it('Gets data from api with invalid url', (done) => {
-        assert.isRejected(api.getData('notvalid.com', log, config)).then(() => {
+        assert.isRejected(api.getData("notvalid.com", log, config)).then(() => {
             done();
         });
     });
 
-    after('close mongo connection', () => {
+    after('Close mongo connection', () => {
        mongoose.connection.close();
     });
 });
