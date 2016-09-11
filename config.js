@@ -15,6 +15,10 @@ module.exports = require('rc')('monstars', {
     mongo: {
         uri:'mongodb://localhost/monstars'
     },
+    web:{
+        port: 3000,
+        url: 'http://localhost:3000'
+    },
     url: 'http://stats.nba.com/stats/leaguedashptstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=' +
     '&DraftPick=&DraftYear=&GameScope=&Height=&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0' +
     '&Outcome=&PORound=0&PerMode=Totals&PlayerExperience=&PlayerOrTeam=Player&PlayerPosition=' +

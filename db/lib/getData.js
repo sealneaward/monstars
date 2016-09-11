@@ -53,6 +53,9 @@ const getData = (url,log) => {
 * */
 const insert = (data) => {
     return new Promise ((resolve,reject) => {
+        // delete db on each population to avoid overlap
+        mongoose.connection.db.dropDatabase();
+
         const player = new Player(mongoose);
         player.create(data,(err) => {
             /* istanbul ignore if */
