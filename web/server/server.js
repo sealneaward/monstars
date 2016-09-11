@@ -9,7 +9,7 @@ const createServer = function(config, log, next){
     // server settings
     app.set('view engine', 'pug');
     app.set('views', path.join(__dirname, '../views'));
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(__dirname +  'public'));
     app.use(bodyParser.urlencoded({ extended: true }));
 
     // load routes into server
