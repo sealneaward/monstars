@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const createServer = function(config, log, next){
+const createServer = function(config, log, players, teams, next){
     const app = express();
 
     // server settings
@@ -13,7 +13,7 @@ const createServer = function(config, log, next){
     app.use(bodyParser.urlencoded({ extended: true }));
 
     // load routes into server
-    app.get('/', require('./routes/data'));
+    app.get('/', require('./routes/data')(log, players, teams));
 
     // listen on port
     app.listen(config.web.port);

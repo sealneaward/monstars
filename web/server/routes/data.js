@@ -2,6 +2,8 @@
 
 const mongoose = require('mongoose');
 
-module.exports = function(req,res){
-    res.render('data.pug');
+module.exports = function(log, players, teams){
+    return function(req,res){
+        res.render('player-selection.pug', {teams: teams, players: players});
+    };
 };
